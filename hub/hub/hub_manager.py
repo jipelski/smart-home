@@ -1,34 +1,26 @@
-import logging
 import struct
 import json
 import asyncio_mqtt
 import asyncio
-from ble_client import BLE_Client
+from ble_client import BLEClient
+import datetime
 from config import Config
 
 class HubManager():
-    def __init__(self):
-        self.config = Config()
-
+    def __init__(self, config):
         self.mqtt_client = asyncio_mqtt.Client(
-            hostname=self.config.MQTT_BROKER,
-            port=self.config.MQTT_PORT,
-            username=self.config.MQTT_USERNAME,
-            password=self.config.MQTT_PASSWORD,
+            hostname=config.MQTT_BROKER,
+            port=config.MQTT_PORT,
+            username=config.MQTT_USERNAME,
+            password=config.MQTT_PASSWORD,
         )
+        
+        self.LOOK_UP_TABLE = config.LOOK_UP_TABLE
 
-        logging.basicConfig(
-            filename=self.config.BLE_LOG_FILE, 
-            format=self.config.BLE_LOG_FORMAT, 
-            datefmt=self.config.BLE_LOG_DATE_FORMAT , 
-            encoding=self.config.BLE_LOG_ENCODING, 
-            level=logging.DEBUG
-        )
-
-        self.logger = logging.getLogger("HubManager")
+        self.logger = config.logger
         self.clients = {}
-        self.start_mqtt()
 
+    # TODO: ensure client stays connected by wrapping start_mqtt command call into a loop that listens and excepts aimqtt.errors
     async def start_mqtt(self):
         try:
             await self.mqtt_client.connect()
@@ -37,45 +29,57 @@ class HubManager():
             self.logger.exception(f'Failed to start mqtt client: {e}')
 
 
-    async def create_and_connect(self, peripheral_mac, service_uuid, characteristic_uuid, structure):
-        client = BLE_Client(
+    async def create_and_connect(self, peripheral_mac, service_uuid, characteristic_uuid, structure, type):
+        client = BLEClient(
             logger=self.logger, 
             peripheral_mac=peripheral_mac, 
             service_uuid=service_uuid, 
             characteristic_uuid=characteristic_uuid, 
             structure=structure,
-            handler=self.handle_data
+            handler=self.handle_data,
+            type=type
         )
         await client.connect()
         self.clients[peripheral_mac] = client
 
     async def disconnect_ble_client(self, peripheral_mac):
-        client = self.clients[peripheral_mac]
-        await client.disconnect()
         try:
-            del self.clients[peripheral_mac]
+            client = self.clients[peripheral_mac]
+            await client.disconnect()
+            try:
+                del self.clients[peripheral_mac]
+            except KeyError:
+                self.logger.exception(f'{peripheral_mac} not in client dictionary: {e}')
         except Exception as e:
-            self.logger.exception(f'{peripheral_mac} not in client dictionary: {e}')
+            self.logger.exception(f'Unable to disconnect client: {e}')
 
-    def handle_data(self, structure, peripheral_mac, data):
+    def handle_data(self, structure, peripheral_mac, type, data):
         try:
             unpacked_data = struct.unpack(structure, data)
-            final_data = (peripheral_mac,) + unpacked_data
-            asyncio.create_task(self.send_data_to_backend(final_data))
+            date = datetime(unpacked_data[0], unpacked_data[1], unpacked_data[2], unpacked_data[3], unpacked_data[4], unpacked_data[5])
+            json_data = { 'type' : type , 'sensor_id' : peripheral_mac, 'timestamp' : date}
+            data_fields = {}
+            for attribute, index in self.LOOK_UP_TABLE.get(type):
+                data_fields[attribute] = unpacked_data[index]
+            json_data['data_fields'] = data_fields
+            asyncio.create_task(self.send_data_to_backend(json_data))
         except Exception as e:
             self.logger.exception(f'Unable to unpack data from {peripheral_mac} - {e}')
 
+    # TODO: implement sending data through ssl by creating tsl parameters and encrypt it using a cypher
     async def send_data_to_backend(self, data):
         try:
             topic = self.config.MQTT_DATA_TOPIC
+            qos = 2 # QOS 2 ensures the message is sent exactly once
             payload = json.dumps(data)
-            await self.mqtt_client.publish(topic, payload)
+            await self.mqtt_client.publish(topic=topic, payload=payload, qos=qos)
         except Exception as e:
             self.logger.exception(f"Failed to send data: {e}")
 
+    # TODO: ensure messages are sent using tsl_parameters and decypher accordingly
     async def handle_commands(self):
         try:
-            async with self.mqtt_client.unfiltered_messages() as messages:
+            async with self.mqtt_client.messages() as messages:
                 async for message in messages:
                     payload = json.loads(message.payload.decode())
                     command = payload.get("command")
@@ -85,8 +89,11 @@ class HubManager():
                             payload["service_uuid"],
                             payload["characteristic_uuid"],
                             payload["structure"],
+                            payload["type"],
                         )
                     elif command == "disconnect_device":
                         await self.disconnect_ble_client(payload["peripheral_mac"])
+                    else:
+                        self.logger.error(f'Unknown command received: {command}')
         except Exception as e:
             self.logger.exception(f'Failed to handle commands: {e}')

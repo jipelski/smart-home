@@ -1,7 +1,7 @@
 from bleak import BleakClient
 
-class BLE_Client():
-    def __init__(self, logger, peripheral_mac, service_uuid, characteristic_uuid, structure, handler):
+class BLEClient():
+    def __init__(self, logger, peripheral_mac, service_uuid, characteristic_uuid, structure, handler, type):
         self.logger = logger
         self.client = BleakClient(peripheral_mac)
         self.peripheral_mac = peripheral_mac
@@ -10,9 +10,10 @@ class BLE_Client():
         self.structure = structure
         self.connected = False
         self.handler = handler
+        self.type = type
     
     def notification_handler(self, sender, data):
-        self.handler(self.structure, self.peripheral_mac, data)
+        self.handler(self.structure, self.peripheral_mac, self.type, data)
     
     async def connect(self):
         try:

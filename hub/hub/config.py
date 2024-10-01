@@ -1,5 +1,6 @@
 from dotenv import load_dotenv
 import os
+import logging
 
 class Config():
     def __init__(self):
@@ -11,7 +12,14 @@ class Config():
         self.MQTT_USERNAME = os.getenv('MQTT_USERNAME')
         self.MQTT_PASSWORD = os.getenv('MQTT_PASSWORD')
 
-        self.BLE_LOG_FILE = os.getenv('BLE_LOG_FILE')
-        self.BLE_LOG_FORMAT = os.getenv('BLE_LOG_FORMAT')
-        self.BLE_LOG_DATE_FORMAT = os.getenv('BLE_LOG_DATE_FORMAT')
-        self.BLE_LOG_ENCODING = os.getenv('BLE_LOG_ENCODING')
+        self.LOOK_UP_TABLE = os.getenv('LOOK_UP_TABLE')
+
+        logging.basicConfig(
+            filename=os.getenv('BLE_LOG_FILE'), 
+            format=os.getenv('BLE_LOG_FORMAT'), 
+            datefmt=os.getenv('BLE_LOG_DATE_FORMAT') , 
+            encoding=os.getenv('BLE_LOG_ENCODING'), 
+            level=logging.DEBUG
+        )
+
+        self.logger = logging.getLogger("HubManager")
