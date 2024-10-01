@@ -1,0 +1,7 @@
+CREATE TABLE sensor_data (
+    id SERIAL PRIMARY KEY,
+    sensor_id VARCHAR NOT NULL,
+    sensor_type VARCHAR NOT NULL,
+    timestamp TIMESTAMP WITHOUT TIME ZONE DEFAULT (NOW() AT TIME ZONE 'UTC'),
+    data JSONB NOT NULL
+);
