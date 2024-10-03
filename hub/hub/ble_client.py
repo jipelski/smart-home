@@ -1,4 +1,5 @@
 from bleak import BleakClient
+import asyncio
 
 class BLEClient():
     def __init__(self, logger, peripheral_mac, service_uuid, characteristic_uuid, structure, handler, type):
@@ -16,14 +17,16 @@ class BLEClient():
         self.handler(self.structure, self.peripheral_mac, self.type, data)
     
     async def connect(self):
-        try:
-            await self.client.connect()
-            self.connected = True
-            self.logger.info(f"Connected to {self.client.address}")
-            await self.subscribe()
-        except Exception as e:
-            self.connected = False
-            self.logger.exception(f"Failed to connect to: {self.peripheral_mac} - {e}")
+        while not self.connected:
+            try:
+                await self.client.connect()
+                self.connected = True
+                self.logger.info(f"Connected to {self.client.address}")
+                await self.subscribe()
+            except Exception as e:
+                self.logger.exception(f"Failed to connect to: {self.peripheral_mac} - {e}")
+                await asyncio.sleep(5)
+            
 
     async def subscribe(self):
         try:
