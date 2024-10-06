@@ -1,0 +1,5 @@
+FROM python:3.11-slim
+WORKDIR /app/redis_to_db
+COPY ./back_end/back_end/redis_to_db /app/redis_to_db/
+RUN pip install --no-cache-dir -r /app/redis_to_db/requirements.txt
+CMD [ "python", "redis_to_db.py" ]

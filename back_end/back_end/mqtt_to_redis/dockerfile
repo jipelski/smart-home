@@ -1,0 +1,5 @@
+FROM python:3.11-slim
+WORKDIR /app/mqtt_to_redis
+COPY ./back_end/back_end/mqtt_to_redis /app/mqtt_to_redis
+RUN pip install --no-cache-dir -r /app/mqtt_to_redis/requirements.txt
+CMD [ "python", "mqtt_to_redis.py" ]

@@ -1,0 +1,3 @@
+asyncpg
+redis
+python-dotenv
