@@ -1,6 +1,5 @@
 import aiomqtt
 import asyncio
-import logging
 import json
 import os
 from redis.asyncio import Redis
@@ -8,8 +7,8 @@ import logging
 from dotenv import load_dotenv
 import sys
 
-if sys.platform == 'win32':
-    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+if sys.platform.startswith('win'):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 class MqttToRedis():
     def __init__(self):
@@ -23,7 +22,7 @@ class MqttToRedis():
         )
         self.logger = logging.getLogger(__name__)
 
-        self.DATA_TOPICS = set(os.getenv('DATA_TOPICS'))
+        self.DATA_TOPICS = set(os.getenv('DATA_TOPICS').split(','))
 
         self.mqtt_client = aiomqtt.Client(
             hostname=os.getenv('MQTT_BROKER'), 
@@ -56,7 +55,6 @@ class MqttToRedis():
                 message_payload = message.payload.decode('utf-8')
         
                 message_dict = json.loads(message_payload)
-
                 # Convert the `data_fields` dict to a JSON string
                 if 'data_fields' in message_dict:
                     message_dict['data_fields'] = json.dumps(message_dict['data_fields'])

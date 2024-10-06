@@ -1,4 +1,3 @@
-import datetime
 import logging
 import json
 from datetime import datetime
@@ -9,8 +8,8 @@ import asyncio
 from dotenv import load_dotenv
 import sys
 
-if sys.platform == 'win32':
-    asyncio.set_event_loop_policy(asyncio.WindowsProactorEventLoopPolicy())
+if sys.platform.startswith('win'):
+    asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
 
 class RedisToDB():
     def __init__(self):
@@ -77,7 +76,6 @@ class RedisToDB():
         
         
         data_fields_json = json.dumps(data_fields)
-
         await self.store_data(sensor_id, sensor_type, timestamp, data_fields_json)
 
     async def store_data(self, sensor_id, sensor_type, timestamp, data_fields):
@@ -87,7 +85,6 @@ class RedisToDB():
                     INSERT INTO sensor_data (sensor_id, sensor_type, timestamp, data)
                     VALUES ($1, $2, $3, $4)
                 """
-
                 await conn.execute(query, 
                     sensor_id,
                     sensor_type,
