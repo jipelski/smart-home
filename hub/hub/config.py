@@ -16,6 +16,8 @@ class Config():
 
         self.LOOK_UP_TABLE = json.loads(os.getenv('LOOK_UP_TABLE'))
 
+        self.DEVICES = json.loads(os.getenv('DEVICES'))
+
         logging.basicConfig(
             filename=os.getenv('BLE_LOG_FILE'), 
             format=os.getenv('BLE_LOG_FORMAT'), 

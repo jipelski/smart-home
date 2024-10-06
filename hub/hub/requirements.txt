@@ -1,0 +1,3 @@
+aiomqtt
+python-dotenv
+bleak

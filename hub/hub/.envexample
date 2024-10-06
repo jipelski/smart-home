@@ -1,0 +1,16 @@
+BLE_LOG_FILE=BLE.log
+BLE_LOG_FORMAT=%(asctime)s %(message)s
+BLE_LOG_DATE_FORMAT=%m/%d/%Y %I:%M:%S %p
+BLE_LOG_ENCODING=utf-8
+
+MQTT_BROKER=127.0.0.1
+MQTT_PORT=1883
+MQTT_PASSWORD=Password
+MQTT_USERNAME=UserName
+MQTT_COMMAND_TOPIC=command1/,command2/,command3/
+MQTT_DATA_TOPIC=data1/,data2/,data3/
+MQTT_IDENTIFIER=148-AUSTENHOUSE-GUILDFORD
+
+LOOK_UP_TABLE={"BME688": {"temperature": 1, "humidity": 2, "pressure": 3, "gas_resistance": 4}}
+DEVICES={"dev1": {"peripheral_mac": "XX:XX:XX:XX:XX:XX", "service_uuid": "12345678-1234-5678-1234-56789abcdef0", "characteristic_uuid": "12345678-1234-5678-1234-56789abcdef1", "structure": "hbffff", "type": "BME688"}}
+

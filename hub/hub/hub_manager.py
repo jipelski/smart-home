@@ -81,21 +81,25 @@ class HubManager():
             self.logger.exception(f"Failed to send data: {e}")
 
     async def handle_commands(self):
-        async for message in self.mqtt_client.messages:    
-            try:
-                payload = json.loads(message.payload.decode())
-                command = payload.get("command")
-                if command == "connect_device":
-                    await self.create_and_connect(
-                        payload["peripheral_mac"],
-                        payload["service_uuid"],
-                        payload["characteristic_uuid"],
-                        payload["structure"],
-                        payload["type"],
-                    )
-                elif command == "disconnect_device":
-                    await self.disconnect_ble_client(payload["peripheral_mac"])
-                else:
-                    self.logger.error(f'Unknown command received: {command}')
-            except Exception as e:
-                self.logger.exception(f'Failed to handle commands: {e}')
+        try:
+            async for message in self.mqtt_client.messages:    
+                try:
+                    payload = json.loads(message.payload.decode())
+                    command = payload.get("command")
+                    if command == "connect_device":
+                        await self.create_and_connect(
+                            payload["peripheral_mac"],
+                            payload["service_uuid"],
+                            payload["characteristic_uuid"],
+                            payload["structure"],
+                            payload["type"],
+                        )
+                    elif command == "disconnect_device":
+                        await self.disconnect_ble_client(payload["peripheral_mac"])
+                    else:
+                        self.logger.error(f'Unknown command received: {command}')
+                except Exception as e:
+                    self.logger.exception(f'Failed to handle commands: {e}')
+        except asyncio.CancelledError as e:
+            self.logger.exception("Task was cancelled. Cleaning up...")
+            raise e

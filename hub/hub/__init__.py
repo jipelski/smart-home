@@ -1,1 +1,1 @@
-from . import ble_client, hub_manager, config
+from . import ble_client, hub_manager, config, main
