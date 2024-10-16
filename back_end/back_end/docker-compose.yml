@@ -1,0 +1,126 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "5432:5432"
+    networks:
+      - smart_home_network
+  
+  redis:
+    image: redis:latest
+    container_name: redis_broker
+    environment:
+      - REDIS_STREAM= ${REDIS_STREAM}
+      - REDIS_PORT= ${REDIS_PORT}
+      - REDIS_DB= ${REDIS_DB}
+      - REDIS_BATCH_COUNT=35
+    ports:
+      - "6379:6379"
+    networks:
+      - smart_home_network
+
+  mqtt_broker:
+    image: eclipse-mosquitto:latest
+    container_name: mqtt_broker
+    ports:
+      - "1883:1883"
+    volumes:
+      - ./mosquitto_config:/mosquitto/config
+    networks:
+      - smart_home_network
+    restart: always
+  
+  redis_to_db_service:
+    image: jipelski/redis_to_db_service_arm64:latest 
+    container_name: redis_to_db_service
+    environment:
+      - LOG_FILE=${LOG_FILE}
+      - LOG_FORMAT=${LOG_FORMAT}
+      - LOG_DATE_FORMAT=${LOG_DATE_FORMAT}
+      - LOG_ENCODING=${LOG_ENCODING}
+      - REDIS_STREAM=${REDIS_STREAM}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DB=${REDIS_DB}
+      - REDIS_BATCH_COUNT=${REDIS_BATCH_COUNT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - POSTGRES_BATCH_MAX=${POSTGRES_BATCH_MAX}
+    depends_on:
+      - redis_broker
+      - postgres_db
+    networks:
+      - smart_home_network
+
+  mqtt_to_redis_service:
+    image: jipelski.mqtt_to_redis_service_arm64:latest
+    container_name: mqtt_to_redis_service
+    environment:
+      - LOG_FILE=${LOG_FILE}
+      - LOG_FORMAT=${LOG_FORMAT}
+      - LOG_DATE_FORMAT=${LOG_DATE_FORMAT}
+      - LOG_ENCODING=${LOG_ENCODING}
+      - DATA_TOPICS=${DATA_TOPICS}
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - MQTT_ALIVE_INTERVAL=${MQTT_ALIVE_INTERVAL}
+      - REDIS_STREAM=${REDIS_STREAM}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DB=${REDIS_DB}
+    depends_on:
+      - redis_broker
+      - mqtt_broker
+    networks:
+      - smart_home_network
+
+  fastapi_service:
+    image: jipelski/fastapi_service_arm64:latest
+    container_name: fastapi_service
+    environment:
+      - LOG_FILE=${LOG_FILE}
+      - LOG_FORMAT=${LOG_FORMAT}
+      - LOG_DATE_FORMAT=${LOG_DATE_FORMAT}
+      - MQTT_BROKER=${MQTT_BROKER}
+      - MQTT_PORT=${MQTT_PORT}
+      - MQTT_USERNAME=${MQTT_USERNAME}
+      - MQTT_PASSWORD=${MQTT_PASSWORD}
+      - REDIS_STREAM=${REDIS_STREAM}
+      - REDIS_HOST=${REDIS_HOST}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DB=${REDIS_DB}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+    depends_on:
+      - redis_broker
+      - postgres_db
+      - mqtt_broker
+    ports:
+      - "8000:8000"
+    networks:
+      - smart_home_network
+
+networks:
+  smart_home_network:
+    driver: bridge
+
+volumes:
+  postgres_data:

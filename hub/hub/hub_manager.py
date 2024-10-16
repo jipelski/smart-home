@@ -31,7 +31,8 @@ class HubManager():
             try:
                 async with self.mqtt_client:
                     self.logger.info("MQTT client connected")
-                    await self.mqtt_client.subscribe(self.config.MQTT_COMMAND_TOPIC)
+                    command_topic = f"{self.config.MQTT_COMMAND_TOPIC}/{self.config.MQTT_IDENTIFIER}"
+                    await self.mqtt_client.subscribe(command_topic)
                     await self.handle_commands()
             except Exception as e:
                 self.logger.exception(f'Failed to start or maintain mqtt connection: {e}')
@@ -69,14 +70,15 @@ class HubManager():
             for attr, index in self.LOOK_UP_TABLE.get(type).items():
                 data_fields[attr] = unpacked_data[index]
             json_data['data_fields'] = data_fields
-            asyncio.create_task(self.send_data_to_backend(json_data))
+            topic = 'data/' + type
+            asyncio.create_task(self.send_data_to_backend(topic, json_data))
         except Exception as e:
             self.logger.exception(f'Unable to unpack data from {peripheral_mac} - {e}')
 
-    async def send_data_to_backend(self, data):
+    async def send_data_to_backend(self, sensor_topic, data):
         try:
             payload = json.dumps(data)
-            await self.mqtt_client.publish(topic=self.MQTT_DATA_TOPIC, payload=payload, qos=2)
+            await self.mqtt_client.publish(topic=sensor_topic, payload=payload, qos=2)
         except Exception as e:
             self.logger.exception(f"Failed to send data: {e}")
 

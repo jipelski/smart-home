@@ -1,0 +1,7 @@
+pydantic
+fastapi
+aiomqtt
+redis[asyncio]
+asyncpg
+python-dotenv
+uvicorn

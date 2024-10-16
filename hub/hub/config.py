@@ -6,6 +6,7 @@ import json
 class Config():
     def __init__(self):
         load_dotenv()
+        self.HUB_ID = os.getenv('HUB_ID')
         self.MQTT_COMMAND_TOPIC = os.getenv('MQTT_COMMAND_TOPIC')
         self.MQTT_DATA_TOPIC = os.getenv('MQTT_DATA_TOPIC')
         self.MQTT_BROKER = os.getenv('MQTT_BROKER')
