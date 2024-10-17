@@ -19,6 +19,7 @@ smart-home/
 |       PicoWHwiring.png
 |       Smart_Home_Flowchart.png
 |       Smart_Home_Flowchart.svg
+|       postgres_erd.svg
 |
 +---back_end
 |   +---back_end
