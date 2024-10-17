@@ -2,7 +2,7 @@
 
 ## Description
 
-The Redis to Db service reads data from a Redis stream, processes it, stores it into a database, and publishes sensor id specific updates to a Redis Pub/Sub mechanism for real-time notifications.
+The Redis to Db service reads data from a Redis stream, processes it, stores it in a database, and publishes sensor id specific updates to a Redis Pub/Sub mechanism for real-time notifications.
 
 ## Features
 
@@ -20,7 +20,7 @@ Publishes sensor updates to Redis Pub/Sub channels.
 
 ## How it works
 
-- Creates and connects Redis client to a Redis server and reads messages from a predefined redis stream.
+- Creates and connects Redis client to a Redis server and reads messages from a predefined Redis stream.
 - For each incoming message:
   - Parses and validates data
   - Inserts data into the appropriate table based on the sensor type
@@ -43,7 +43,7 @@ Publishes sensor updates to Redis Pub/Sub channels.
 - Ensure you have an existing .env file as <a href=".envexample">this</a>.
 - Run the following command:
   `docker run -d --env-file .env jipelski/redis_to_db_service_arm64:latest`
-- Note: the above command will only work on linx/arm64 platforms
+- Note: the above command will only work on linux/arm64 platforms
 
 ### Run Locally
 
@@ -58,7 +58,7 @@ cd smart-home/back_end/back_end/redis_to_db
 `pip install -r requirements.txt`
 
 **Configuration**
-- Create an .env file follwing the .envexample file.
+- Create a .env file following the .envexample file.
 
 **Usage**
 
