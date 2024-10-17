@@ -7,6 +7,97 @@ The **Smart Home Automation System** is an IoT-based application designed to col
 # Architecture Overview
 <img src="./assets/Smart_Home_Flowchart.png" alt="Smart Home Flowchart"/>
 
+# Project Structure
+```
+smart-home/
+|   .gitignore
+|   LICENSE
+|   README.md
+|
++---assets
+|       Hub_Service_Flowchart.svg
+|       PicoWHwiring.png
+|       Smart_Home_Flowchart.png
+|       Smart_Home_Flowchart.svg
+|
++---back_end
+|   +---back_end
+|   |   |   docker-compose.yml
+|   |   |   init.sql
+|   |   |   mosquitto.conf
+|   |   |
+|   |   +---app
+|   |   |   |   database.py
+|   |   |   |   dockerfile
+|   |   |   |   main.py
+|   |   |   |   README.md
+|   |   |   |   requirements.txt
+|   |   |   |   __init__.py
+|   |   |   |
+|   |   |   +---models
+|   |   |   |     hub.py
+|   |   |   |     sensor.py
+|   |   |   |
+|   |   |   +---routes
+|   |   |   |     health.py
+|   |   |   |     hub.py
+|   |   |   |     sensor.py
+|   |   |   |     websocket.py
+|   |   |   |
+|   |   |   |
+|   |   |   +---services
+|   |   |         db_service.py
+|   |   |         mqtt_service.py
+|   |   |         websocket_manager.py
+|   |   |
+|   |   |
+|   |   +---celery_service
+|   |   |       celery_config.py
+|   |   |       Dockerfile
+|   |   |       Dockerfile.beat
+|   |   |       requirements.txt
+|   |   |       tasks.py
+|   |   |
+|   |   +---mqtt_to_redis
+|   |   |       .envexample
+|   |   |       dockerfile
+|   |   |       mqtt_to_redis.py
+|   |   |       README.md
+|   |   |       requirements.txt
+|   |   |
+|   |   |
+|   |   +---redis_to_db
+|   |         .envexample
+|   |         dockerfile
+|   |         README.md
+|   |         redis_to_db.py
+|   |         requirements.txt
+|   |
+|   \---tests
++---hub
+|   |   README.md
+|   |
+|   +---hub
+|   |       .envexample
+|   |       ble.log
+|   |       ble_client.py
+|   |       config.py
+|   |       dockerfile
+|   |       hub_manager.py
+|   |       main.py
+|   |       requirements.txt
+|   |       __init__.py
+|   |
+|   \---test
+|
+\---sensors
+    \---BME688PICOWH
+            ble.py
+            bme680.py
+            main.py
+            README.md
+```
+
 # Features
   - **Environmental Monitoring**: Collects various environment data using sensors.
   - **Real-Time Data Streaming**: Provides live updates through WebSockets.
