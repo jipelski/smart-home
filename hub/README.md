@@ -89,14 +89,14 @@ Supports commands to connect and disconnect from BLE devices dynamically.
 
 **Software**
 
-Access to an MQTT broker. Either ran locally using **Eclipse Mosquitto** or on the cloud using **HiveMq**.
-Python 3.11 or higher
-`aiomqtt`
-`bleak`
-`python-dotenv`
-`bluez`
-`dbus`
-`pip` package manager
+- Access to an MQTT broker. Either ran locally using **Eclipse Mosquitto** or on the cloud using **HiveMq**.
+- Python 3.11 or higher
+- `aiomqtt`
+- `bleak`
+- `python-dotenv`
+- `bluez`
+- `dbus`
+- `pip` package manager
 
 
 ### Run with Docker
