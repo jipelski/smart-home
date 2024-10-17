@@ -24,15 +24,13 @@ The `mqtt_to_redis` service acts as a data catcher on the backend. It subscribes
 
 ### Requirements
 
-**Hardware**:
-- Redis server accessible
-- MQTT broker accessible
-
-**Software**
-Python 3.11 or higher
-`aiomqtt`
-`redis`
-`python-dotenv`
+**Software**:
+- Access to a Redis server
+- Access to an MQTT broker
+- Python 3.11 or higher
+- `aiomqtt`
+- `redis`
+-`python-dotenv`
 
 ### Run with Docker
 
