@@ -52,7 +52,8 @@ cd smart-home/back_end/back_end/mqtt_to_redis
 `pip install -r requirements.txt`
 
 **Configuration**
-- Create an .env file follwing the .envexample file.
+
+Create an .env file follwing the .envexample file.
 
 **Usage**
 
