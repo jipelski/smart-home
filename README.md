@@ -98,6 +98,9 @@ smart-home/
             README.md
 ```
 
+# Database Relationship Diagram
+<img src="./assets/postgres_erd.svg" alt="Database Relationship Diagram"/>
+
 # Features
   - **Environmental Monitoring**: Collects various environment data using sensors.
   - **Real-Time Data Streaming**: Provides live updates through WebSockets.
