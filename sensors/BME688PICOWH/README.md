@@ -37,7 +37,11 @@ An approach to integrating a BME688 sensor with the Raspberry Pi Pico W (RP2040)
 ## Setup and Installation
 
 **Wiring**
-- Connect the BME688 sensor to the Pico W using IC2 by mapping SCL to GP21, SDA to GP20, GND(on BME688) to GND(on Pico W), and 2-6V to VBUS.
+- Connect the BME688 sensor to the Pico W using IC2 by mapping:
+  - SCL to GP21
+  - SDA to GP20
+  - GND(on BME688) to GND(on Pico W)
+  - 2-6V to VBUS
 <img src="../../assets/PicoWHwiring.png" />
 
 **Flash MicroPython Firmware**
