@@ -6,7 +6,7 @@ The `app` service is a FastAPI application that provides RESTful APIs and WebSoc
 
 - Retrieve sensor data.
 - Receive real-time updates via WebSockets.
-- Send commands to hubs (e.g., connect or disconnect devices). # Note: in later versions some peripherals will be smart switches, which will require other type of commands.
+- Send commands to hubs (e.g., connect or disconnect devices). # Note: in later versions, some peripherals will be smart switches, which will require other types of commands.
 
 ## Features
 
@@ -85,7 +85,7 @@ The `app` service is a FastAPI application that provides RESTful APIs and WebSoc
 
 ### Services
 **1. database.py**
-  -  Manages the connection to the postgres database asynchronously using asyncpg.
+  -  Manages the connection to the Postgres database asynchronously using asyncpg.
   -  Initialises the database connection at start-up.
 
 **2. models**
@@ -96,7 +96,7 @@ The `app` service is a FastAPI application that provides RESTful APIs and WebSoc
   - `health.py`: Health check endpoint.
   - `sensor.py`: Sensor data retrieval endpoint.
   - `hub.py`: Hub command posting endpoint.
-  - `websocket.py`: Websocket endpoint.
+  - `websocket.py`: WebSocket endpoint.
 
 **4. services/**
   -  `db_service.py`: Holds the functions for data retrieval from the database.
@@ -129,7 +129,7 @@ The `app` service is a FastAPI application that provides RESTful APIs and WebSoc
   - Ensure you have an existing .env file.
   - Run the following command:
     `docker run -d --env-file .env jipelski/fastapi_service_arm64:latest`
-  - Note: the above command will only work on linx/arm64 platforms
+  - Note: the above command will only work on Linux/arm64 platforms
 
 ### Run Locally
 
@@ -145,7 +145,7 @@ cd smart-home/back_end/back_end/app
 
 **Configuration**
 
-Create an .env file follwing the .envexample file.
+Create a .env file following the .envexample file.
 
 **Usage**
 
