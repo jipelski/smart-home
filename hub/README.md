@@ -104,7 +104,7 @@ Supports commands to connect and disconnect from BLE devices dynamically.
 - Ensure you have an existing .env file as <a href="./hub/.envexample">this</a>.
 - Run the following command:
 `docker run -d --privileged --net=host --env-file .env --device=/dev/hci0 -v /var/run/dbus:/var/run/dbus jipelski/offsite_hub_service_arm64:latest`
-- Note: the above command will only work on linx/arm64 platforms
+- Note: the above command will only work on linux/arm64 platforms
 
 ### Run Locally
 
