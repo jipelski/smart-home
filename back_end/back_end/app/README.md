@@ -62,7 +62,6 @@ The `app` service is a FastAPI application that provides RESTful APIs and WebSoc
     - `limit`: Optional `int`
   - **Response Model**: `List[SensorDataOut]`
 
-
 - **GET** `/sensor-data-latest/{sensor_type}/{sensor_id}`
   - **Description**: Retrieve the latest sensor data.
   - **Response Model**: `SensorDataOut`
@@ -70,6 +69,7 @@ The `app` service is a FastAPI application that provides RESTful APIs and WebSoc
 - **GET** `/aggregated-sensor-data/{sensor_type}/{sensor_id}`
   - **Description**: Retrieve aggregated data for the specified sensor.
   - **Response Model**: `List[AggrDataOut]`
+  
 
 #### Hub Commands
 - **POST** `/hubs/{hub_id}/connect_device`
