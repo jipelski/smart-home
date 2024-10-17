@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Query
 from typing import Optional
 import datetime
-from models.sensor import SensorDataOut
-from services.db_service import fetch_sensor_data, fetch_sensor_data_filtered, fetch_latest_sensor_data
+from models.sensor import SensorDataOut, AggrDataOut
+from services.db_service import fetch_sensor_data, fetch_sensor_data_filtered, fetch_latest_sensor_data, fetch_aggregated_data
 
 router = APIRouter()
 
@@ -23,3 +23,7 @@ async def get_sensor_data_filtered(
 @router.get("/sensor-data-latest/{sensor_type}/{sensor_id}", response_model=SensorDataOut)
 async def get_latest_sensor_data(sensor_id: str, sensor_type: str):
     return await fetch_latest_sensor_data(sensor_id, sensor_type)
+
+@router.get("/aggregated-sensor-data/{sensor_type}/{sensor_id}", response_model=AggrDataOut)
+async def get_aggreated_data(sensor_id: str, sensor_type: str):
+    return await fetch_aggregated_data(sensor_id, sensor_type)

@@ -1,5 +1,5 @@
 from database import db
-from models.sensor import SensorDataOut, BME688Data
+from models.sensor import SensorDataOut, BME688Data, BME688AggrData, AggrDataOut
 from typing import Optional, List
 import datetime
 
@@ -74,3 +74,18 @@ async def fetch_sensor_data_filtered(
             return [BME688Data(sensor_type='BME688', **dict(row)) for row in rows]
         else:
             raise ValueError(f'Unsupported sensor type: {sensor_type}')
+
+async def fetch_aggregated_data(sensor_id: str, sensor_type: str):
+    async with db.pool.acquire() as connection:
+        if sensor_type == 'BME688':
+            query = """
+                SELECT sensor_id, date, avg_temperature, max_temperature, min_temperature, avg_humidity, max_humidity, min_humidity, avg_pressure, max_pressure, min_pressure, avg_gas_resistance, max_gas_resistance, min_gas_resistance
+                FROM BME688AGGREGATES
+                WHERE sensor_id = $1
+                ORDER BY date DESC
+                LIMIT 1000
+            """
+            rows = await connection.fetch(query, sensor_id)
+            return [BME688AggrData(sensor_type='BME688', **dict(row)) for row in rows]
+        else:
+            raise ValueError(f"Unsupported sensor type: {sensor_type}")
