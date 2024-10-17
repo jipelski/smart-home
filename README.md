@@ -2,7 +2,7 @@
 
 # Overview
 
-The **Smart Home Automation System** is an IoT-based application designed to collect environmental data from various sensor, and to manage various IoT devices. It provides real-time updates, historical data, and allows users to have a better understanding of their enviroment. In later versions, it will allow users to create routines for a various range of IoT devices such as actuators, switches, radios, etc.
+The **Smart Home Automation System** is an IoT-based application designed to collect environmental data from various sensors, and to manage various IoT devices. It provides real-time updates, historical data, and allows users to have a better understanding of their enviroment. In later versions, it will allow users to create routines for a range of IoT devices such as actuators, switches, radios, etc.
 
 # Architecture Overview
 <img src="./assets/Smart_Home_Flowchart.png" alt="Smart Home Flowchart"/>
