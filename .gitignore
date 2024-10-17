@@ -5,4 +5,4 @@
 *.pytest_cache
 schemas
 docker-commands
-.tar
+*.tar
