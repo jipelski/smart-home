@@ -2,7 +2,7 @@
 
 # Overview
 
-The **Smart Home Automation System** is an IoT-based application designed to collect environmental data from various sensors, and to manage various IoT devices. It provides real-time updates, historical data, and allows users to have a better understanding of their enviroment. In later versions, it will allow users to create routines for a range of IoT devices such as actuators, switches, radios, etc.
+The **Smart Home Automation System** is an IoT-based application designed to collect environmental data from various sensors and manage various IoT devices. It provides real-time updates, historical data, and allows users to have a better understanding of their enviroment. In later versions, it will allow users to create routines for a range of IoT devices such as actuators, switches, radios, etc.
 
 # Architecture Overview
 <img src="./assets/Smart_Home_Flowchart.png" alt="Smart Home Flowchart"/>
@@ -103,10 +103,10 @@ smart-home/
 <img src="./assets/postgres_erd.svg" alt="Database Relationship Diagram"/>
 
 # Features
-  - **Environmental Monitoring**: Collects various environment data using sensors.
+  - **Environmental Monitoring**: Collects various environmental data using sensors.
   - **Real-Time Data Streaming**: Provides live updates through WebSockets.
   - **Historical Data**: Stores data in PostgreSQL for historical analysis.
-  - **Modular Architecture**: The project is composed of independent, decoupled modules for senors, hubs, and backend services.
+  - **Modular Architecture**: The project is composed of independent, decoupled modules for sensors, hubs, and backend services.
   - **Scalable and Extensive**: The system is designed to allow horizontal scaling for most modules and physical devices such as sensors and hubs.
 
 # Services
@@ -114,7 +114,7 @@ smart-home/
 ### BME688 sensor on Pico W
 <a href="sensors/BME688PICOWH/README.md">BME688 ReadMe file</a>
 
-Collects environmental data and transmits it over BLE to a central hub specific for that location.
+Collects environmental data and transmits it over BLE to a central hub specific to that location.
 
 **Data Collected**
 - Temperature
@@ -155,7 +155,7 @@ Multiple instances can be deployed to monitor multiple locations at once.
 ### Prerequisites
 **Hardware**
   - **BME688 mounted on Pico W** (only available sensor at the moment)
-  - **Rapberry Pi 4 model B** (or any BLE-capable device that can run 24/7)
+  - **Raspberry Pi 4 model B** (or any BLE-capable device that can run 24/7)
   - `Optional` Hetzner Cloud Server
 
 **Software**
@@ -178,12 +178,12 @@ Multiple instances can be deployed to monitor multiple locations at once.
   - Navigate to the <a href="hub/">hub</a> directory and follow the ReadMe file instructions.
 
 **Setting up the Backend Services**
-  - Ensure you have an appropiate `.env` file, `init.sql` and `mosquitto.conf` file in your repository.
+  - Ensure you have an appropriate `.env` file, `init.sql`, and `mosquitto.conf` file in your repository.
   - Run docker compose command:
   - `docker compose up`
 
 # Usage
-## Accessing the WebInterface
+## Accessing the Web Interface
 Open your browser and navigate to `https://localhost:8000/docs` to access the FastAPI application.
 
 ## API endpoints
