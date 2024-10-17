@@ -17,7 +17,7 @@ The `mqtt_to_redis` service acts as a data catcher on the backend. It subscribes
 - Creates an MQTT client and subscribes to data topics.
 - For each incoming message:
   - Decodes the payload
-  - Trasforms the data_fields into a JSON string
+  - Transforms the data_fields into a JSON string
   - Adds message to Redis Stream
 
 ## Setup and Installation
@@ -37,7 +37,7 @@ The `mqtt_to_redis` service acts as a data catcher on the backend. It subscribes
 - Ensure you have an existing .env file as <a href=".envexample">this</a>.
 - Run the following command:
   `docker run -d --env-file .env jipelski/mqtt_to_redis_service_arm64:latest`
-- Note: the above command will only work on linx/arm64 platforms
+- Note: the above command will only work on linux/arm64 platforms
 
 ### Run Locally
 
@@ -53,7 +53,7 @@ cd smart-home/back_end/back_end/mqtt_to_redis
 
 **Configuration**
 
-Create an .env file follwing the .envexample file.
+Create a .env file following the .envexample file.
 
 **Usage**
 
