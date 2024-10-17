@@ -43,7 +43,7 @@ The Hub Service Module acts as a central bridge in one location, connecting Blue
   Listens for commands by subscribing to specific command topics to dynamically connect to or disconnect from BLE peripherals.
 
 ## Architecture Overview
-<img src="assets/Hub_Service_Flowchart.svg" alt="Hub Service Flowchart" />
+<img src="../assets/Hub_Service_Flowchart.svg" alt="Hub Service Flowchart" />
 
   **BLE_Sensors**:
   One or more peripheral devices comunicate bidirectionally with a local instance of Hub_Service trough BLE.
@@ -99,12 +99,14 @@ Python 3.11 or higher
 `pip` package manager
 
 
-**Using Docker**
+### Run with Docker
 
 - Ensure you have an existing .env file as <a href="./hub/.envexample">this</a>.
 - Run the following command:
 `docker run -d --privileged --net=host --env-file .env --device=/dev/hci0 -v /var/run/dbus:/var/run/dbus jipelski/offsite_hub_service_arm64:latest`
 - Note: the above command will only work on linx/arm64 platforms
+
+### Run Locally
 
 **Clone the Repository**
 ```
