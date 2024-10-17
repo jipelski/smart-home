@@ -6,7 +6,7 @@ The Hub Service Module acts as a central bridge in one location, connecting Blue
 ## Components
 
 **Hardware**
-- Raspberry Pi 4 model B with an integrated bluetooth module
+- Raspberry Pi 4 model B with an integrated Bluetooth module
 
 **Software**
 - `ble_client.py`: Handles BLE client connections and notifications.
@@ -14,14 +14,14 @@ The Hub Service Module acts as a central bridge in one location, connecting Blue
 - `hub_manager.py`: Manages BLE clients and MQTT communication.
 - `main.py`: Program entry point.
 
-**Module Struture**
+**Module Structure**
 ```
 +---hub
 |   |   .envexample        # Example env file
 |   |   __init__.py        # __init__ file
 |   |   ble_client.py      
 |   |   config.py
-|   |   dockerfile         # dockerfile needed to build image
+|   |   dockerfile         # dockerfile needed to build the image
 |   |   hub_manager.py
 |   |   main.py
 |   |   requirements.txt   # requirements file
@@ -31,10 +31,10 @@ The Hub Service Module acts as a central bridge in one location, connecting Blue
 ## Features
 
   **BLE Connectivity**: 
-  Connects to multiple BLE peripehral devices and subscribes to their notitications.
+  Connects to multiple BLE peripheral devices and subscribes to their notifications.
   
   **Data Handling**: 
-  Unpacks received data using preset data structures and repacks it for transmission.
+  Unpacks received data using preset data structures and repack it for transmission.
   
   **MQTT Publishing**: 
   Publishes sensor data to specified MQTT Broker using specified topics.
@@ -46,13 +46,13 @@ The Hub Service Module acts as a central bridge in one location, connecting Blue
 <img src="../assets/Hub_Service_Flowchart.svg" alt="Hub Service Flowchart" />
 
   **BLE_Sensors**:
-  One or more peripheral devices comunicate bidirectionally with a local instance of Hub_Service trough BLE.
+  One or more peripheral devices communicate bidirectionally with a local instance of Hub_Service through BLE.
 
   **Hub_Service**:
-  Hub_Service acts as a bridge between the connected peripheral devices and MQTT client on the backend. It subscribes to command topics and publishes to sensor update topics.
+  Hub_Service acts as a bridge between the connected peripheral devices and the MQTT client on the backend. It subscribes to command topics and publishes to sensor update topics.
 
   **MQTT_Client**:
-  MQTT_Client on backend subscribes to sensor update topics, and publishes based on command topics.
+  MQTT_Client on the backend subscribes to sensor update topics and publishes based on command topics.
 
 ## How it works
 
@@ -84,7 +84,7 @@ Supports commands to connect and disconnect from BLE devices dynamically.
 ### Requirements
 **Hardware**
 
-- A device with a bluetooth module. I am using a **Raspberry Pi 4 Model B**.
+- A device with a Bluetooth module. I am using a **Raspberry Pi 4 Model B**.
 - At least 1 peripheral sensor. I am using a **Pico WH** with a mounted **BME688** sensor.
 
 **Software**
@@ -119,7 +119,7 @@ cd smart-home/hub/hub
 `pip install -r requirements.txt`
 
 **Configuration**
-- Create an .env file follwing the .envexample file.
+- Create a .env file following the .envexample file.
 
 **Usage**
 
