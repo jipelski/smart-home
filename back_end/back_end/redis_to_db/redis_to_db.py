@@ -97,8 +97,14 @@ class RedisToDB():
             async with conn.transaction():
                 await conn.execute(query, *values)
         try:
+            redis_client = Redis(
+                host=os.getenv('REDIS_HOST'),
+                port=int(os.getenv('REDIS_PORT')),
+                db=1  
+            )
+            
             channel = f'sensor_updates:{sensor_id}'
-            await self.redis_client.publish(channel=channel, message=data_fields)
+            await redis_client.publish(channel=channel, message=json.dumps(data_fields))
         except Exception as e:
             self.logger.exception(f'Failed to publish message to Redis: {e}')
 

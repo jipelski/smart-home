@@ -1,6 +1,6 @@
 from fastapi import WebSocket, WebSocketDisconnect
 import os
-import redis.asyncio
+import redis as Redis
 import asyncio
 
 class ConnectionManager:
@@ -25,10 +25,10 @@ class ConnectionManager:
                 await connection.send_json(data)
 
     async def start_redis_listener(self):
-        self.redis = redis.Redis(
+        self.redis = Redis.Redis(
             host=os.getenv('REDIS_HOST'),
             port=int(os.getenv('REDIS_PORT')),
-            db=0
+            db=1
         )
 
         pubsub = self.redis.pubsub()
