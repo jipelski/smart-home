@@ -21,8 +21,14 @@ class ConnectionManager:
 
     async def broadcast(self, sensor_id: str, data: dict):
         if sensor_id in self.active_connections:
-            for connection in self.active_connections[sensor_id]:
-                await connection.send_json(data)
+            connections = self.active_connections[sensor_id].copy()
+            
+            for connection in connections:
+                try:
+                    await connection.send_json(data)
+                except Exception as e:
+                    print(f"Failed to send message to {sensor_id}: {e}")
+                    self.disconnect(connection, sensor_id)
 
     async def start_redis_listener(self):
         self.redis = Redis.Redis(
