@@ -4,4 +4,4 @@ aiomqtt
 redis[asyncio]
 asyncpg
 python-dotenv
-uvicorn
+uvicorn[standard]
